@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>学习通粘贴限制解除</title>
+<style>
+  :root {
+    --paper: #FDFBF7;
+    --ink: #171716;
+    --teal: #0D9488;
+    --teal-hover: #0F766E;
+    --surface: #FFFFFF;
+    --muted: #F3F1EC;
+    --border: #E8E4DC;
+    --secondary: #7D7972;
+    --gold: #F59E0B;
+    --radius: 16px;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+    --shadow-md: 0 8px 30px rgba(0,0,0,0.08);
+    --shadow-glow: 0 0 0 8px rgba(13,148,136,0.10);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  .page {
+    width: 100%;
+    max-width: 460px;
+    text-align: center;
+  }
+
+  /* ── Header ── */
+  .lock-icon {
+    font-size: 72px;
+    display: block;
+    line-height: 1;
+    margin-bottom: 24px;
+    filter: drop-shadow(0 4px 8px rgba(245,158,11,0.25));
+    animation: unlock-pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+  @keyframes unlock-pop {
+    from { transform: scale(0.5); opacity: 0; }
+    to   { transform: scale(1);   opacity: 1; }
+  }
+
+  .title {
+    font-size: 30px;
+    font-weight: 800;
+    letter-spacing: -0.3px;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .subtitle {
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--secondary);
+    margin-bottom: 48px;
+  }
+
+  /* ── CTA Button ── */
+  .cta-wrap {
+    margin-bottom: 12px;
+  }
+  .cta {
+    display: inline-block;
+    padding: 18px 44px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    background: var(--teal);
+    border-radius: 50px;
+    text-decoration: none;
+    cursor: grab;
+    user-select: none;
+    -webkit-user-drag: element;
+    box-shadow: var(--shadow-md), var(--shadow-glow);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    animation: cta-enter 0.7s 0.15s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+  @keyframes cta-enter {
+    from { transform: translateY(16px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+  }
+  .cta:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 40px rgba(0,0,0,0.12), 0 0 0 12px rgba(13,148,136,0.12);
+  }
+  .cta:active {
+    cursor: grabbing;
+    transform: translateY(0);
+  }
+  .cta:focus-visible {
+    outline: 3px solid var(--teal);
+    outline-offset: 3px;
+  }
+
+  .cta-hint {
+    font-size: 14px;
+    color: var(--secondary);
+  }
+  .cta-hint mark {
+    background: none;
+    color: var(--teal);
+    font-weight: 600;
+  }
+
+  /* ── Divider ── */
+  .divider {
+    width: 40px;
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    margin: 56px auto 40px;
+  }
+
+  /* ── Steps ── */
+  .steps {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+  }
+  .step {
+    flex: 1;
+    max-width: 140px;
+  }
+  .step-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--muted);
+    color: var(--teal);
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .step h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .step p {
+    font-size: 13px;
+    color: var(--secondary);
+    line-height: 1.5;
+  }
+  .step kbd {
+    display: inline-block;
+    padding: 1px 6px;
+    font-size: 11px;
+    font-family: inherit;
+    background: var(--muted);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+  }
+
+  /* ── Footer ── */
+  .footer {
+    margin-top: 64px;
+    font-size: 12px;
+    color: var(--secondary);
+    opacity: 0.6;
+  }
+
+  /* ── Reduced motion ── */
+  @media (prefers-reduced-motion: reduce) {
+    .lock-icon, .cta { animation: none; }
+  }
+
+  /* ── Mobile ── */
+  @media (max-width: 480px) {
+    .page { max-width: 100%; }
+    .lock-icon { font-size: 56px; }
+    .title { font-size: 25px; }
+    .subtitle { font-size: 15px; margin-bottom: 36px; }
+    .cta { padding: 15px 32px; font-size: 16px; }
+    .steps { flex-direction: column; align-items: center; gap: 20px; }
+    .step { max-width: 100%; }
+    .divider { margin: 40px auto 32px; }
+    .footer { margin-top: 48px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <span class="lock-icon" aria-hidden="true">🔓</span>
+  <h1 class="title">学习通粘贴限制解除</h1>
+  <p class="subtitle">一键恢复简答题粘贴功能，拖到书签栏即用</p>
+
+  <div class="cta-wrap">
+    <a class="cta" href="javascript:void function(){&quot;use strict&quot;;function freeDocument(doc){if(!doc||doc.__pasteFreed)return;doc.__pasteFreed=true;doc.addEventListener(&apos;paste&apos;,function(e){e.stopImmediatePropagation()},true);doc.oncontextmenu=null;doc.oncopy=null;doc.oncut=null;doc.onselectstart=null;try{var list=doc.querySelectorAll(&apos;textarea,input,[contenteditable]&apos;);for(var i=0;i&lt;list.length;i++){var el=list[i];el.removeAttribute(&apos;onpaste&apos;);el.removeAttribute(&apos;oncopy&apos;);el.removeAttribute(&apos;oncut&apos;);el.removeAttribute(&apos;oncontextmenu&apos;);el.removeAttribute(&apos;onselectstart&apos;)}}catch(e){}}function freeAllIframes(){var frames=document.querySelectorAll(&apos;iframe&apos;);for(var i=0;i&lt;frames.length;i++){try{var doc=frames[i].contentDocument;if(doc)freeDocument(doc)}catch(e){}}}new MutationObserver(function(){freeAllIframes()}).observe(document.documentElement,{childList:true,subtree:true});freeDocument(document);freeAllIframes();var toast=document.createElement(&apos;div&apos;);toast.textContent=&apos;✅ 粘贴限制已解除，可直接 Ctrl+V 粘贴&apos;;toast.style.cssText=&apos;position:fixed;bottom:24px;right:24px;z-index:2147483647;background:#43a047;color:#fff;padding:12px 22px;border-radius:8px;font:14px -apple-system,sans-serif;box-shadow:0 4px 12px rgba(0,0,0,.15);pointer-events:none;&apos;;document.body.appendChild(toast);setTimeout(function(){toast.style.opacity=&apos;0&apos;;toast.style.transition=&apos;opacity 0.4s&apos;;setTimeout(function(){toast.remove()},400)},2000)}()">解除粘贴限制</a>
+  </div>
+  <p class="cta-hint">按住拖到 <mark>书签栏</mark></p>
+
+  <div class="divider"></div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-badge">①</div>
+      <h3>显示书签栏</h3>
+      <p>按 <kbd>Ctrl+Shift+B</kbd><br>Mac 按 <kbd>⌘⇧B</kbd></p>
+    </div>
+    <div class="step">
+      <div class="step-badge">②</div>
+      <h3>拖拽安装</h3>
+      <p>把上方按钮拖到书签栏，松手即完成</p>
+    </div>
+    <div class="step">
+      <div class="step-badge">③</div>
+      <h3>一键使用</h3>
+      <p>打开学习通作业页，点书签栏按钮即可粘贴</p>
+    </div>
+  </div>
+
+  <p class="footer">仅供学习辅助使用</p>
+
+</div>
+</body>
+</html>
